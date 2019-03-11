@@ -50,17 +50,17 @@ describe Oystercard do
   it { is_expected.to respond_to(:touch_in) }
 
   it "should show in journey as false at first" do
-    expect(@card.in_journey?).to eq false
+    expect(@card).to_not be_in_journey
   end
 
   it "should change in journey status to true when card touched in" do
     @card.touch_in
-    expect(@card.in_journey?).to eq true
+    expect(@card).to be_in_journey
   end
 
   it "should change in journey status to false when card touched out" do
     @card.touch_in
     @card.touch_out
-    expect(@card.in_journey?).to eq false
+    expect(@card).to_not be_in_journey
   end
 end
