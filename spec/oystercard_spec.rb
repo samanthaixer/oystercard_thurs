@@ -54,13 +54,19 @@ describe Oystercard do
   end
 
   it "should change in journey status to true when card touched in" do
+    @card.top_up(5)
     @card.touch_in
     expect(@card).to be_in_journey
   end
 
   it "should change in journey status to false when card touched out" do
+    @card.top_up(5)
     @card.touch_in
     @card.touch_out
     expect(@card).to_not be_in_journey
+  end
+
+  it "should have a minimum balance for a single journey" do
+    expect { @card.touch_in }.to raise_error "Insufficient funds"
   end
 end

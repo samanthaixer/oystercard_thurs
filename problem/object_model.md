@@ -113,3 +113,29 @@ NoMethodError (undefined method `touch_in' for #<Oystercard:0x00007fce72881998 @
 1. in_journey? predicate (true/false?)
 2. `touch_in` sets `in_journey?` to `true`
 3. `touch_out` sets `in_journey?` to `false`
+
+```
+In order to pay for my journey
+As a customer
+I need to have the minimum amount (£1) for a single journey.
+```
+
+Object | Messages
+---------------- | --------------------
+Customer | 
+Card | top_up 
+Card | deduct
+Card | in_journey?
+Card | touch_in
+Card | touch_out
+
+```
+2.5.0 :001 > c = Oystercard.new
+ => #<Oystercard:0x00007f902c8d9870 @balance=0, @in_use=false>  
+2.5.0 :004 > c.touch_in
+ => true         <- should raise an error for a minimum amount of £1 to touch in 
+```
+
+1. set MINIMUM constant 
+2. check balance against minimum when you check in 
+3. raise error if balance < minimum 
