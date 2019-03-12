@@ -48,6 +48,7 @@ describe Oystercard do
   # end
 
   it { is_expected.to respond_to(:touch_in).with(1).argument }
+  it { is_expected.to respond_to(:touch_out).with(1).argument }
 
   it "should show in journey as false at first" do
     expect(@card).to_not be_in_journey
@@ -62,7 +63,7 @@ describe Oystercard do
   it "should change in journey status to false when card touched out" do
     @card.top_up(5)
     @card.touch_in("dummy")
-    @card.touch_out
+    @card.touch_out("dummy")
     expect(@card.in_journey?).to eq false
   end
 
@@ -73,7 +74,7 @@ describe Oystercard do
   it "should deduct the minimum fare when touched out" do
     subject.top_up(5)
     subject.touch_in("dummy")
-    expect { subject.touch_out }.to change{ subject.balance }.by(-1)
+    expect { subject.touch_out("dummy") }.to change{ subject.balance }.by(-1)
   end
 
   it "should change status of station" do
@@ -81,10 +82,32 @@ describe Oystercard do
     expect { subject.touch_in("Aldgate") }.to change{ subject.entry_station }.from(nil).to("Aldgate")
   end
 
-  it "should change status of station" do
+  it "should change status of entry station" do
     subject.top_up(5)
     subject.touch_in("Aldgate")
-    expect { subject.touch_out }.to change{ subject.entry_station }.from("Aldgate").to(nil)
+    expect { subject.touch_out("dummy") }.to change{ subject.entry_station }.from("Aldgate").to(nil)
   end
+
+  it "should change status of exit station" do
+    subject.top_up(5)
+    subject.touch_in("Aldgate")
+    expect { subject.touch_out("Moor Park") }.to change{ subject.exit_station }.from(nil).to("Moor Park")
+  end
+
+  it "journey list should be an array"  do
+    expect(subject.journey_list).to eq []
+  end
+
+  # it "should change status of exit station" do
+  #   subject.top_up(5)
+  #   subject.touch_in("Aldgate")
+  #   subject.touch_out
+  #   expect(subject.journey_list).to eq ["Aldgate"]
+  # end
+
+
+
+
+
 
 end
