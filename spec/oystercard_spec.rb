@@ -94,16 +94,31 @@ describe Oystercard do
     expect { subject.touch_out("Moor Park") }.to change{ subject.exit_station }.from(nil).to("Moor Park")
   end
 
+  # this is from the walkthrough
+
+  let (:entry_station) { double :station }
+  let (:exit_station) { double :station }
+
+  it "stores exit station" do
+    subject.top_up(5)
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+    expect(subject.exit_station).to eq exit_station
+  end
+
   it "journey list should be an array"  do
     expect(subject.journey_list).to eq []
   end
 
-  # it "should change status of exit station" do
-  #   subject.top_up(5)
-  #   subject.touch_in("Aldgate")
-  #   subject.touch_out
-  #   expect(subject.journey_list).to eq ["Aldgate"]
-  # end
+  let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
+
+  it 'stores a journey' do
+    subject.top_up(5)
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+    expect(subject.journey_list).to include journey
+  end
+
 
 
 
