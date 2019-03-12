@@ -55,15 +55,15 @@ describe Oystercard do
 
   it "should change in journey status to true when card touched in" do
     @card.top_up(5)
-    @card.touch_in("dummy")
-    expect(@card).to be_in_journey
+    @card.touch_in("Aldgate")
+    expect(@card.in_journey?).to eq true
   end
 
   it "should change in journey status to false when card touched out" do
     @card.top_up(5)
     @card.touch_in("dummy")
     @card.touch_out
-    expect(@card).to_not be_in_journey
+    expect(@card.in_journey?).to eq false
   end
 
   it "should have a minimum balance for a single journey" do
