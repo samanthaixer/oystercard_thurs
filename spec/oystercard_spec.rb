@@ -4,8 +4,8 @@ describe Oystercard do
   before(:each) do
     @card = Oystercard.new
   end
-  
-  it { is_expected.to respond_to(:balance) } 
+
+  it { is_expected.to respond_to(:balance) }
   it { is_expected.to respond_to(:top_up) }
 
   it "returns a starting balance of 0" do
@@ -17,12 +17,12 @@ describe Oystercard do
     expect(@card.balance).to eq 10
   end
 
-  it "increases balance by top up amount" do 
+  it "increases balance by top up amount" do
     @card.top_up(10)
     @card.top_up(20)
     expect(@card.balance).to eq 30
   end
-  
+
   it "allows top up to 1 below limit amount" do
     limit = Oystercard::DEFAULT_LIMIT
     expect(@card.top_up(limit - 1)).to eq limit - 1
@@ -34,7 +34,7 @@ describe Oystercard do
     @card.top_up(1)
     expect { @card.top_up(limit) }.to raise_error error
   end
-  
+
   it { is_expected.to respond_to(:deduct) }
 
   it "deducts £10 from the balance" do
@@ -69,4 +69,15 @@ describe Oystercard do
   it "should have a minimum balance for a single journey" do
     expect { @card.touch_in }.to raise_error "Insufficient funds"
   end
+
+  it "should deduct the minimum fare when touched out" do
+    subject.top_up(5)
+    subject.touch_in
+    expect { subject.touch_out }.to change{ subject.balance }.by(-1)
+  end
+
+
+
+
+
 end

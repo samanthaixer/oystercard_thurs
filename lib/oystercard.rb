@@ -10,7 +10,7 @@ class Oystercard
 
   def top_up(amount)
     raise "Top-up exceeds £#{DEFAULT_LIMIT} balance limit. Add lower amount." if @balance + amount > DEFAULT_LIMIT
-      
+
     @balance += amount
   end
 
@@ -26,6 +26,8 @@ class Oystercard
 
   def touch_out
     @in_use = false
+
+    deduct(MINIMUM)
   end
 
   def in_journey?
