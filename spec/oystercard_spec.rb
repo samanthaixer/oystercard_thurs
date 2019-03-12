@@ -78,7 +78,13 @@ describe Oystercard do
 
   it "should change status of station" do
     subject.top_up(5)
-    expect { subject.touch_in("Aldgate") }.to change{ subject.station }.from(nil).to("Aldgate")
+    expect { subject.touch_in("Aldgate") }.to change{ subject.entry_station }.from(nil).to("Aldgate")
+  end
+
+  it "should change status of station" do
+    subject.top_up(5)
+    subject.touch_in("Aldgate")
+    expect { subject.touch_out }.to change{ subject.entry_station }.from("Aldgate").to(nil)
   end
 
 end
