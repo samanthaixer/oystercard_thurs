@@ -35,17 +35,17 @@ describe Oystercard do
     expect { @card.top_up(limit) }.to raise_error error
   end
 
-  it { is_expected.to respond_to(:deduct) }
+  # it { is_expected.to respond_to(:deduct) }
 
-  it "deducts £10 from the balance" do
-    @card.top_up(20)
-    expect(@card.deduct(10)).to eq 10
-  end
-
-  it "deducts a user entered fare from the balance" do
-    @card.top_up(50)
-    expect(@card.deduct(20)).to eq 30
-  end
+  # it "deducts £10 from the balance" do
+  #   @card.top_up(20)
+  #   expect(@card.deduct(10)).to eq 10
+  # end
+  #
+  # it "deducts a user entered fare from the balance" do
+  #   @card.top_up(50)
+  #   expect(@card.deduct(20)).to eq 30
+  # end
 
   it { is_expected.to respond_to(:touch_in) }
 
