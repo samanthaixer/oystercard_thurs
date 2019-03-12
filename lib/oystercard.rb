@@ -24,21 +24,21 @@ class Oystercard
 
   def touch_out(exit_station)
     @exit_station = exit_station
-    @journey_list << {entry_station: @entry_station, exit_station: @exit_station}
+    add_journey
     @entry_station = nil
     in_journey?
     deduct(MINIMUM)
   end
 
   def in_journey?
-    if @entry_station == nil
-      false
-    else
-      true
-    end
+    @entry_station == nil ? false : true
   end
 
   private
+
+  def add_journey
+    @journey_list << {entry_station: @entry_station, exit_station: @exit_station}
+  end
 
   def deduct(amount)
     @balance -= amount
