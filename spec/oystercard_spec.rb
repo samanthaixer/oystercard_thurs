@@ -47,7 +47,7 @@ describe Oystercard do
   #   expect(@card.deduct(20)).to eq 30
   # end
 
-  it { is_expected.to respond_to(:touch_in) }
+  it { is_expected.to respond_to(:touch_in).with(1).argument }
 
   it "should show in journey as false at first" do
     expect(@card).to_not be_in_journey
@@ -55,29 +55,30 @@ describe Oystercard do
 
   it "should change in journey status to true when card touched in" do
     @card.top_up(5)
-    @card.touch_in
+    @card.touch_in("dummy")
     expect(@card).to be_in_journey
   end
 
   it "should change in journey status to false when card touched out" do
     @card.top_up(5)
-    @card.touch_in
+    @card.touch_in("dummy")
     @card.touch_out
     expect(@card).to_not be_in_journey
   end
 
   it "should have a minimum balance for a single journey" do
-    expect { @card.touch_in }.to raise_error "Insufficient funds"
+    expect { @card.touch_in("dummy") }.to raise_error "Insufficient funds"
   end
 
   it "should deduct the minimum fare when touched out" do
     subject.top_up(5)
-    subject.touch_in
+    subject.touch_in("dummy")
     expect { subject.touch_out }.to change{ subject.balance }.by(-1)
   end
 
-
-
-
+  it "should change status of station" do
+    subject.top_up(5)
+    expect { subject.touch_in("Aldgate") }.to change{ subject.station }.from(nil).to("Aldgate")
+  end
 
 end

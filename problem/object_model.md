@@ -169,3 +169,10 @@ Card | touch_out
 ```
 
 1. change touch_out to include balance - minimum fare
+2. move deduct method to private and comment out tests.
+
+```
+In order to pay for my journey
+As a customer
+I need to know where I've travelled from
+```
