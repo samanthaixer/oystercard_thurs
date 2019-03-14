@@ -50,22 +50,22 @@ describe Oystercard do
   it { is_expected.to respond_to(:touch_in).with(1).argument }
   it { is_expected.to respond_to(:touch_out).with(1).argument }
 
-  it "should show in journey as false at first" do
-    expect(@card).to_not be_in_journey
-  end
+  # it "should show in journey as false at first" do
+  #   expect(@card).to_not be_in_journey
+  # end
 
-  it "should change in journey status to true when card touched in" do
-    @card.top_up(5)
-    @card.touch_in("Aldgate")
-    expect(@card.in_journey?).to eq true
-  end
-
-  it "should change in journey status to false when card touched out" do
-    @card.top_up(5)
-    @card.touch_in("dummy")
-    @card.touch_out("dummy")
-    expect(@card.in_journey?).to eq false
-  end
+  # it "should change in journey status to true when card touched in" do
+  #   @card.top_up(5)
+  #   @card.touch_in("Aldgate")
+  #   expect(@card.in_journey?).to eq true
+  # end
+  #
+  # it "should change in journey status to false when card touched out" do
+  #   @card.top_up(5)
+  #   @card.touch_in("dummy")
+  #   @card.touch_out("dummy")
+  #   expect(@card.in_journey?).to eq false
+  # end
 
   it "should have a minimum balance for a single journey" do
     expect { @card.touch_in("dummy") }.to raise_error "Insufficient funds"
@@ -77,45 +77,49 @@ describe Oystercard do
     expect { subject.touch_out("dummy") }.to change{ subject.balance }.by(-1)
   end
 
-  it "should change status of station" do
-    subject.top_up(5)
-    expect { subject.touch_in("Aldgate") }.to change{ subject.entry_station }.from(nil).to("Aldgate")
-  end
-
-  it "should change status of entry station" do
-    subject.top_up(5)
-    subject.touch_in("Aldgate")
-    expect { subject.touch_out("dummy") }.to change{ subject.entry_station }.from("Aldgate").to(nil)
-  end
-
-  it "should change status of exit station" do
-    subject.top_up(5)
-    subject.touch_in("Aldgate")
-    expect { subject.touch_out("Moor Park") }.to change{ subject.exit_station }.from(nil).to("Moor Park")
-  end
+  # it "should change status of station" do
+  #   subject.top_up(5)
+  #   expect { subject.touch_in("Aldgate") }.to change{ subject.entry_station }.from(nil).to("Aldgate")
+  # end
+  #
+  # it "should change status of entry station" do
+  #   subject.top_up(5)
+  #   subject.touch_in("Aldgate")
+  #   expect { subject.touch_out("dummy") }.to change{ subject.entry_station }.from("Aldgate").to(nil)
+  # end
+  #
+  # it "should change status of exit station" do
+  #   subject.top_up(5)
+  #   subject.touch_in("Aldgate")
+  #   expect { subject.touch_out("Moor Park") }.to change{ subject.exit_station }.from(nil).to("Moor Park")
+  # end
 
   # this is from the walkthrough
 
   let (:entry_station) { double :station }
   let (:exit_station) { double :station }
 
-  it "stores exit station" do
-    subject.top_up(5)
-    subject.touch_in(entry_station)
-    subject.touch_out(exit_station)
-    expect(subject.exit_station).to eq exit_station
-  end
+  # it "stores exit station" do
+  #   subject.top_up(5)
+  #   subject.touch_in(entry_station)
+  #   subject.touch_out(exit_station)
+  #   expect(subject.exit_station).to eq exit_station
+  # end
 
   it "journey list should be an array"  do
     expect(subject.journey_list).to eq []
   end
 
-  let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
+  let(:journey) { double :journey }
+  let(:journey_class) { double :journey_class, new: journey }
+  let(:subject) { Oystercard.new(journey_class) }
 
   it 'stores a journey' do
     subject.top_up(5)
+    expect(journey).to receive(:start)
     subject.touch_in(entry_station)
     subject.touch_out(exit_station)
+    expect(journey).to receive(:in_journey?).and_return(true)
     expect(subject.journey_list).to include journey
   end
 end
